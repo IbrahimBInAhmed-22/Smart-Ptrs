@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <exception>
+#include <stdexcept>
 
 //using namespace std;
 
@@ -11,6 +12,83 @@ class shared_ptr;
 
 template <class T>
 class weak_ptr;
+
+
+template <class T>
+ class unique_ptr
+ {
+ private:
+ T * _ptr;
+ public:
+ unique_ptr() // Initializes with null
+ {
+    _ptr = nullptr;
+ }
+ unique_ptr(int bytes) // Allocates memeory
+ {
+    _ptr = new T[bytes];
+ }
+ unique_ptr(const unique_ptr<T>&p) = delete; // Throws compiler error
+ unique_ptr& operator=(const unique_ptr<T>&p) = delete; // Throws compiler error
+ unique_ptr(const unique_ptr<T>&&p)
+ {
+    _ptr = std::move(p._ptr);
+ }
+ // This would make _ptr point to the memory p was pointing to
+// p would start pointing to null
+ unique_ptr& operator=(const unique_ptr<T>&&p)
+ {
+    if(*this == p) 
+    return *this;
+    if (*this != p)
+    {
+        _ptr =std::move(p._ptr);
+        return *this;
+    }
+ }
+ // Deallocates whatever _ptr is pointing to
+// This would make _ptr point to the memory p was pointing to
+// _p would start pointing to null
+ T* operator->() // returns _ptr
+ {
+    return _ptr;
+ }
+ T& operator*() // returns reference to what _ptr is pointing to
+ {
+    return *_ptr;
+ }
+T& operator[](int index)
+{
+    if (_ptr+index == nullptr)
+    throw std::out_of_range("Illegal memory access");
+    return _ptr[index];
+} // returns reference to value at index
+ // Also handles illegal memory access
+ static unique_ptr<T> make_unique()
+ {
+    unique_ptr<T> temp;
+    return temp;
+
+ }
+ // returns an instance of unique pointer object
+void reset() // deletes the memory and points _ptr to null
+{
+    delete[] _ptr;
+    _ptr = nullptr;
+}
+~unique_ptr() // Deallocates memory
+{
+    if(_ptr != nullptr)
+    {
+        delete[] _ptr;
+        _ptr = nullptr;
+    }
+}
+ };
+
+
+
+
 
 
 template <class T>
@@ -74,7 +152,6 @@ template <class T>
  }
  // Returns reference count
 };
-
 template <class T>
  class shared_ptr{
  private:
@@ -225,8 +302,8 @@ template <class T>
 T& operator[](int index)
 {
     if (_ptr[index] == nullptr)
-    //throw out_of_range("Illegal Memory access");
-    return _ptr[index];
+        throw std::out_of_range("Illegal Memory access");
+    return *_ptr[index];
 } // returns reference to value at index
  // Also handles illegal memory access
  bool operator==(const weak_ptr<T>&p)
@@ -237,14 +314,18 @@ T& operator[](int index)
 
 int main()
 {
-     //std::cout<<"Between line 2 and 3";
-    shared_ptr<int> project = shared_ptr<int>::make_shared();
-     //std::cout<<"Between line 2 and 3";
-    shared_ptr<int> project2 = project;
-    //std::cout<<"Between line 2 and 3";
-    weak_ptr<int> project3 = project;
-   // std::cout<<" Entering project.count()";
-    std::cout<<" Reference Count: " << project.count() << std::endl;
+    unique_ptr<int> unq_ptr = std::move(unique_ptr<int>::make_unique()); // Allocates memory for 10 integers
+    std::cout<< "Debug point:";
+    // unq_ptr[0] = 5;
+    // std::cout<<"Unique Pointer: " << unq_ptr[0] << std::endl;
+//      //std::cout<<"Between line 2 and 3";
+//     shared_ptr<int> project = shared_ptr<int>::make_shared();
+//      //std::cout<<"Between line 2 and 3";
+//     shared_ptr<int> project2 = project;
+//     //std::cout<<"Between line 2 and 3";
+//     weak_ptr<int> project3 = project;
+//    // std::cout<<" Entering project.count()";
+//     std::cout<<" Reference Count: " << project.count() << std::endl;
 
     return 0;
 }
