@@ -43,10 +43,15 @@ template <class T>
  {
     return _ptr;
  } // returns _ptr
+ void reset()
+ {
+    _ptr = nullptr;
+    block = nullptr;
+ }
  T& operator*()
  {
-    
-    if(!_ptr || !block || block->count() == 0)
+
+    if(_ptr == nullptr || !block)
     throw std::out_of_range("Illegal Memory access");
     return *_ptr;
  } // returns reference to what _ptr is pointing to

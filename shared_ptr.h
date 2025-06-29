@@ -47,7 +47,7 @@ template <class T>
                     delete block;
                     block = nullptr;
                     delete[]_ptr;
-                    _ptr = nullptr;
+                    _ptr =  nullptr;
                 }
 
             }
@@ -56,7 +56,7 @@ template <class T>
 
         _ptr = p._ptr;
         block = p.block;
-        if(block != nullptr)
+        if(block != nullptr && this != &p)
         block->assign(*this);
         
         return *this;

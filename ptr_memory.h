@@ -66,7 +66,11 @@ template <class T>
  // Free the weak_ptr from the memory block
  void free()
  {
-    shared_memory.clear();
+
+    for(auto p:weak_memory)
+    {
+        p->reset();
+    }
     weak_memory.clear();
     reference_count = 0; 
  }
