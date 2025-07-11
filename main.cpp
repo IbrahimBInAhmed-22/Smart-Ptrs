@@ -10,8 +10,11 @@
 
 
 
-int main()
+class demoSmartPtrs
 {
+    public:
+    void demo()
+    {
     std::cout << "\n--- UNIQUE_PTR TESTS ---\n";
 
     // Test 1: Basic creation using make_unique
@@ -98,6 +101,6 @@ int main()
     } catch (const std::exception& ex) {
         std::cout << "Caught exception after shared_ptr reset: " << ex.what() << "\n";
     }
+    }
 
-    return 0;
-}
+};
