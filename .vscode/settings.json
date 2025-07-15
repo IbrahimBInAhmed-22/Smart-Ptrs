@@ -49,6 +49,26 @@
         "cwchar": "cpp",
         "new": "cpp",
         "utility": "cpp",
-        "xtr1common": "cpp"
+        "xtr1common": "cpp",
+        "cstdarg": "cpp",
+        "cwctype": "cpp",
+        "array": "cpp",
+        "deque": "cpp",
+        "string": "cpp",
+        "unordered_map": "cpp",
+        "algorithm": "cpp",
+        "functional": "cpp",
+        "memory_resource": "cpp",
+        "numeric": "cpp",
+        "optional": "cpp",
+        "random": "cpp",
+        "ratio": "cpp",
+        "string_view": "cpp",
+        "numbers": "cpp",
+        "semaphore": "cpp",
+        "stop_token": "cpp",
+        "thread": "cpp",
+        "cinttypes": "cpp",
+        "*.tpp": "cpp"
     }
 }
